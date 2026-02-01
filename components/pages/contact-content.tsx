@@ -89,12 +89,16 @@ export function ContactPageContent() {
     setSubmitStatus("idle");
 
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch("/api/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          type: "contact",
+          subject: "New Website Enquiry",
+        }),
       });
 
       if (response.ok) {
