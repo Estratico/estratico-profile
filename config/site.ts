@@ -2,8 +2,8 @@ export const siteConfig = {
   name: "Estratico",
   description:
     "Full-service technology company delivering innovative digital solutions. We transform businesses through cutting-edge software development, strategic consulting, and digital transformation services.",
-  url: "https://estratico.co.zw",
-  ogImage: "https://estratico.co.zw/og-image.jpg",
+  url: "https://estratico.org.zw",
+  ogImage: "https://estratico.org.zw/og-image.jpg",
   links: {
     twitter: "https://twitter.com/estratico",
     linkedin: "https://linkedin.com/company/estratico",
