@@ -97,18 +97,18 @@ export const services = [
   },
   {
     id: "digital-strategy",
-    title: "Digital Strategy",
+    title: "Digital Media & Marketing Strategy",
     shortDescription:
-      "Strategic consulting for digital transformation initiatives.",
+      "Integrated strategic consulting for brand growth and digital dominance.",
     description:
-      "We help businesses navigate the digital landscape with comprehensive strategy consulting. From digital transformation roadmaps to technology stack decisions.",
+      "We bridge the gap between technology and storytelling. Our strategy services align your digital infrastructure with high-performance marketing and media execution to drive measurable ROI.",
     features: [
-      "Digital Transformation",
-      "Technology Consulting",
-      "Process Automation",
-      "Growth Strategy",
+      "Omnichannel Marketing Strategy",
+      "Media Planning & Buying",
+      "Content & Brand Positioning",
+      "Growth Marketing & Data Analytics",
     ],
-    icon: "TrendingUp",
+    icon: "Megaphone", // Or "Globe" or "BarChart" depending on your library
   },
   {
     id: "ui-ux-design",

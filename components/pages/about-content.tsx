@@ -48,34 +48,19 @@ const values = [
 
 const team = [
   {
-    name: "Alex Chen",
+    name: "Tawana West",
     role: "Founder & CEO",
-    bio: "15+ years in tech leadership, previously at Google and Stripe.",
+    bio: "4+ years in FullStack Development",
   },
   {
-    name: "Maria Rodriguez",
-    role: "CTO",
-    bio: "Expert in cloud architecture and AI systems with a PhD from MIT.",
+    name: "Progress Muchararadza",
+    role: "Co-Founder & COO",
+    bio: "Expert in Backend Development and Database Design and Optimization.",
   },
   {
-    name: "James Wilson",
-    role: "Head of Design",
-    bio: "Award-winning designer with experience at Apple and Airbnb.",
-  },
-  {
-    name: "Sarah Kim",
-    role: "VP of Engineering",
-    bio: "Former Amazon principal engineer specializing in scalable systems.",
-  },
-  {
-    name: "David Brown",
-    role: "Client Success Director",
-    bio: "10+ years helping enterprises achieve digital transformation.",
-  },
-  {
-    name: "Emily Zhang",
-    role: "Head of AI/ML",
-    bio: "Published researcher and expert in applied machine learning.",
+    name: "Emmanuel Nyamayaro",
+    role: "Co-Founder & CTO",
+    bio: "Expert Tech Specialist, Network Administrator and Cloud Infrastructure",
   },
 ]
 
@@ -98,8 +83,8 @@ export function AboutPageContent() {
         className="pt-32 pb-20 md:pt-40 md:pb-32 relative overflow-hidden"
       >
         <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-muted/50 to-background" />
-          <div className="absolute top-0 left-1/3 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl" />
+          <div className="absolute inset-0 bg-linear-to-b from-muted/50 to-background" />
+          <div className="absolute top-0 left-1/3 w-150 h-150 rounded-full bg-primary/5 blur-3xl" />
         </div>
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -379,10 +364,9 @@ export function AboutPageContent() {
             {/* Map Placeholder */}
             <div className="relative rounded-xl overflow-hidden bg-muted h-80 lg:h-auto">
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin className="h-12 w-12 mx-auto text-muted-foreground/50 mb-2" />
-                  <p className="text-muted-foreground">San Francisco, CA</p>
-                </div>
+               <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d2376.066413270398!2d29.825006770262895!3d-19.423115090079786!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTnCsDI1JzIzLjciUyAyOcKwNDknMzguNiJF!5e0!3m2!1sen!2szw!4v1772484804228!5m2!1sen!2szw" className="border-0 w-full h-full" loading="lazy" referrerPolicy="no-referrer-when-downgrade" 
+               allowFullScreen={false}
+               />
               </div>
             </div>
           </div>

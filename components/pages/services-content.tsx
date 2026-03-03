@@ -13,6 +13,7 @@ import {
   ArrowRight,
   Check,
   ChevronDown,
+  Megaphone,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { services } from "@/config/site"
@@ -25,6 +26,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Brain,
   TrendingUp,
   Palette,
+  Megaphone
 }
 
 export function ServicesPageContent() {
@@ -62,8 +64,8 @@ export function ServicesPageContent() {
         className="pt-32 pb-20 md:pt-40 md:pb-32 relative overflow-hidden"
       >
         <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-muted/50 to-background" />
-          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl" />
+          <div className="absolute inset-0 bg-linear-to-b from-muted/50 to-background" />
+          <div className="absolute top-0 left-1/4 w-150 h-150 rounded-full bg-orange-100/5 blur-3xl" />
         </div>
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
