@@ -50,7 +50,7 @@ export function ServicesOverview() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <Link
-                  href={`/services#${service.id}`}
+                  href={`/services/${service.id}`}
                   className={cn(
                     "group block h-full p-6 md:p-8 rounded-xl border border-border bg-card",
                     "transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5",

@@ -1,7 +1,7 @@
 export const siteConfig = {
-  name: "Estratico",
+  name: "Estratico Technologies",
   description:
-    "Full-service technology company delivering innovative digital solutions. We transform businesses through cutting-edge software development, strategic consulting, and digital transformation services.",
+    "Estratico is a full-service technology company based in Zimbabwe. We are focussed on delivering innovative digital solutions for companies in Zimbabwe and beyond. We transform businesses through cutting-edge software development, strategic consulting, and digital transformation services.",
   url: "https://estratico.org.zw",
   ogImage: "https://estratico.org.zw/og-image.jpg",
   links: {
@@ -10,7 +10,7 @@ export const siteConfig = {
     github: "https://github.com/estratico",
   },
   contact: {
-    email: "estraticozw@gmail.com",
+    email: "hello@estratico.org.zw",
     phone: "+263 78 305 2192",
     address: "1 LongRoad, New Christmas Gift, Gweru, Zimbabwe",
   },
@@ -19,11 +19,19 @@ export const siteConfig = {
     "software development",
     "digital transformation",
     "web development",
+    "web hosting",
+    "email hosting",
+    "vps setup",
+    "vps management",
+    "e-commerce systems",
+    "wordpress",
     "mobile apps",
     "cloud solutions",
     "AI solutions",
     "consulting",
     "estratico",
+    "estratico technologies",
+    "estratico zimbabwe"
   ],
 };
 

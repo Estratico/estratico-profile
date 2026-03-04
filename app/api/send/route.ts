@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: "Estratico <onboarding@resend.dev>",
+      from: `Estratico <${siteConfig.contact.email}>`,
       to: [siteConfig.contact.email],
       subject: rest.subject,
       react: EmailTemplate({ type, data: rest }),
