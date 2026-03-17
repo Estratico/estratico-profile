@@ -1,13 +1,15 @@
 import { MetadataRoute } from "next"
 import { services, siteConfig } from "@/config/site"
+import { getBlogPostSlugs } from "@/lib/basehub-blog"
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async  function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteConfig.url
 
   const routes = [
     "",
     "/services",
     "/work",
+    "/blog",
     "/about",
     "/contact",
   ]
@@ -19,6 +21,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8
   }))
 
+  const blogSlugs = await getBlogPostSlugs()
+  const dynamic_blog_routes:MetadataRoute.Sitemap = blogSlugs.map(s=>({
+    url: `${baseUrl}/blog/${s}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.8
+  }))
+
+
   const main_routes:MetadataRoute.Sitemap = routes.map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
@@ -26,7 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: route === "" ? 1 : 0.8,
   }));
 
-  const all_routes = main_routes.concat(service_routes)
+  const all_routes = main_routes.concat(service_routes).concat(dynamic_blog_routes)
 
 
   return all_routes
