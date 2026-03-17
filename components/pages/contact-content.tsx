@@ -35,14 +35,31 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
+import { DiscoveryCallDialog } from "../discovery-call-cta";
 
 const budgetRanges = [
+  { value: "5k-10k", label: "$5,000 - $10,000" }, // Adjusted for high-end tech
   { value: "10k-25k", label: "$10,000 - $25,000" },
   { value: "25k-50k", label: "$25,000 - $50,000" },
-  { value: "50k-100k", label: "$50,000 - $100,000" },
-  { value: "100k+", label: "$100,000+" },
-  { value: "not-sure", label: "Not sure yet" },
+  { value: "50k+", label: "$50,000+" },
+  { value: "undisclosed", label: "Budget not yet defined" },
 ];
+
+const projectTimelines = [
+  { value: "urgent", label: "Urgent (Less than 1 month)" },
+  { value: "standard", label: "Standard (1-3 months)" },
+  { value: "long-term", label: "Strategic (3-6+ months)" },
+  { value: "not-sure", label: "Flexible / Not sure" },
+];
+
+const projectTypes = [
+  { value: "new-build", label: "New Project from Scratch" },
+  { value: "scaling", label: "Scaling Existing Product" },
+  { value: "maintenance", label: "Support & Maintenance" },
+  { value: "consulting", label: "Technical Strategy/Consulting" },
+];
+
+
 
 export function ContactPageContent() {
   const searchParams = useSearchParams();
@@ -71,8 +88,12 @@ export function ContactPageContent() {
       name: "",
       email: "",
       company: "",
+      jobTitle: "",
       service: preselectedService || "",
+      projectType: "",
       budget: "",
+      timeline: "",
+      referral: "",
       message: "",
       honeypot: "",
     },
@@ -201,121 +222,91 @@ export function ContactPageContent() {
                       autoComplete="off"
                     />
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {/* Section 1: Contact Details */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold border-b pb-2">1. About You</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="name">Full Name <span className="text-destructive">*</span></Label>
+                          <Input id="name" placeholder="John Doe" {...register("name")} />
+                          {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="email">Work Email <span className="text-destructive">*</span></Label>
+                          <Input id="email" type="email" placeholder="john@company.com" {...register("email")} />
+                          {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="company">Organization</Label>
+                          <Input id="company" placeholder="Company Name" {...register("company")} />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="jobTitle">Job Title</Label>
+                          <Input id="jobTitle" placeholder="e.g. CTO, Founder" {...register("jobTitle")} />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Section 2: Project Scope */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold border-b pb-2">2. Project Scope</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <Label>Interested Service</Label>
+                          <Select onValueChange={(v) => setValue("service", v)} defaultValue={preselectedService || ""}>
+                            <SelectTrigger><SelectValue placeholder="Select service" /></SelectTrigger>
+                            <SelectContent>
+                              {services.map((s) => <SelectItem key={s.id} value={s.id}>{s.title}</SelectItem>)}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Project Type</Label>
+                          <Select onValueChange={(v) => setValue("projectType", v)}>
+                            <SelectTrigger><SelectValue placeholder="Nature of project" /></SelectTrigger>
+                            <SelectContent>
+                              {projectTypes.map((t) => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Budget Range</Label>
+                          <Select onValueChange={(v) => setValue("budget", v)}>
+                            <SelectTrigger><SelectValue placeholder="Estimated budget" /></SelectTrigger>
+                            <SelectContent>
+                              {budgetRanges.map((b) => <SelectItem key={b.value} value={b.value}>{b.label}</SelectItem>)}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Desired Timeline</Label>
+                          <Select onValueChange={(v) => setValue("timeline", v)}>
+                            <SelectTrigger><SelectValue placeholder="How fast do you need it?" /></SelectTrigger>
+                            <SelectContent>
+                              {projectTimelines.map((t) => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Section 3: Project Details */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold border-b pb-2">3. Details</h3>
                       <div className="space-y-2">
-                        <Label htmlFor="name">
-                          Name <span className="text-destructive">*</span>
-                        </Label>
-                        <Input
-                          id="name"
-                          placeholder="Your name"
-                          {...register("name")}
-                          className={cn(
-                            errors.name &&
-                              "border-destructive focus-visible:ring-destructive",
-                          )}
+                        <Label htmlFor="message">Project Description <span className="text-destructive">*</span></Label>
+                        <Textarea 
+                          id="message" 
+                          placeholder="Please describe your goals, key features, and any specific challenges you're looking to solve..." 
+                          rows={5} 
+                          {...register("message")} 
                         />
-                        {errors.name && (
-                          <p className="text-sm text-destructive flex items-center gap-1">
-                            <AlertCircle className="h-3 w-3" />
-                            {errors.name.message}
-                          </p>
-                        )}
+                        {errors.message && <p className="text-xs text-destructive">{errors.message.message}</p>}
                       </div>
-
                       <div className="space-y-2">
-                        <Label htmlFor="email">
-                          Email <span className="text-destructive">*</span>
-                        </Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          placeholder="you@company.com"
-                          {...register("email")}
-                          className={cn(
-                            errors.email &&
-                              "border-destructive focus-visible:ring-destructive",
-                          )}
-                        />
-                        {errors.email && (
-                          <p className="text-sm text-destructive flex items-center gap-1">
-                            <AlertCircle className="h-3 w-3" />
-                            {errors.email.message}
-                          </p>
-                        )}
+                        <Label htmlFor="referral">How did you hear about Estratico?</Label>
+                        <Input id="referral" placeholder="e.g. LinkedIn, Referral, Google Search" {...register("referral")} />
                       </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="company">Company</Label>
-                      <Input
-                        id="company"
-                        placeholder="Your company name"
-                        {...register("company")}
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="service">Service Interested In</Label>
-                        <Select
-                          value={serviceValue}
-                          onValueChange={(value) => setValue("service", value)}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a service" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {services.map((service) => (
-                              <SelectItem key={service.id} value={service.id}>
-                                {service.title}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="budget">Budget Range</Label>
-                        <Select
-                          value={budgetValue}
-                          onValueChange={(value) => setValue("budget", value)}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select budget range" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {budgetRanges.map((range) => (
-                              <SelectItem key={range.value} value={range.value}>
-                                {range.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="message">
-                        Message <span className="text-destructive">*</span>
-                      </Label>
-                      <Textarea
-                        id="message"
-                        placeholder="Tell us about your project..."
-                        rows={6}
-                        {...register("message")}
-                        className={cn(
-                          "resize-none",
-                          errors.message &&
-                            "border-destructive focus-visible:ring-destructive",
-                        )}
-                      />
-                      {errors.message && (
-                        <p className="text-sm text-destructive flex items-center gap-1">
-                          <AlertCircle className="h-3 w-3" />
-                          {errors.message.message}
-                        </p>
-                      )}
                     </div>
 
                     {submitStatus === "error" && (
@@ -328,23 +319,8 @@ export function ContactPageContent() {
                       </div>
                     )}
 
-                    <Button
-                      type="submit"
-                      size="lg"
-                      disabled={isSubmitting}
-                      className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Sending...
-                        </>
-                      ) : (
-                        <>
-                          <Send className="mr-2 h-4 w-4" />
-                          Send Message
-                        </>
-                      )}
+                    <Button type="submit" size="lg" className="w-full h-12 text-md bg-primary text-primary-foreground hover:bg-primary/90" disabled={isSubmitting}>
+                      {isSubmitting ? <Loader2 className="animate-spin" /> : "Initiate Consultation"}
                     </Button>
                   </form>
                 )}
@@ -412,13 +388,14 @@ export function ContactPageContent() {
                     Book a free 30-minute discovery call to discuss your project
                     in detail.
                   </p>
-                  <Button
+                  {/* <Button
                     variant="secondary"
                     size="sm"
                     className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90"
                   >
                     Schedule a Call
-                  </Button>
+                  </Button> */}
+                  <DiscoveryCallDialog/>
                 </div>
               </motion.div>
             </div>

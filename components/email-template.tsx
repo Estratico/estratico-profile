@@ -1,28 +1,32 @@
+import { ContactFormValues } from "@/lib/validations";
 import {
   Body,
-  Button,
   Container,
   Head,
+  Heading,
   Hr,
   Html,
-  Img,
-  Link,
   Preview,
-  Row,
   Section,
-  Tailwind,
   Text,
+  Tailwind,
+  Row,
+  Column,
+  Button,
 } from "@react-email/components";
+import Image from "next/image";
 
 interface EmailTemplateProps {
   data: any;
-  type: "contact" | "newsletter";
+  type: "contact" | "newsletter" | "discovery";
 }
 
 export function EmailTemplate({ data, type }: EmailTemplateProps) {
   switch (type) {
     case "contact":
       return <ContactEmailTemplate data={data} />;
+    case "discovery":
+      return <DiscoveryConfirmationEmail data={data} />;
     case "newsletter":
       return <NewsletterEmailTemplate data={data} />;
   }
@@ -31,77 +35,210 @@ export function EmailTemplate({ data, type }: EmailTemplateProps) {
 export function ContactEmailTemplate({
   data,
 }: {
-  data: EmailTemplateProps["data"];
+  data: ContactFormValues & {
+    subject: string;
+  };
 }) {
+  const previewText = `New Enquiry from ${data.name} - ${data.company || "Personal"}`;
+
   return (
-    <Tailwind>
-      <Container className="w-full bg-gray-100 py-10 font-sans text-gray-800">
-        <Section className="mx-auto max-w-[600px] overflow-hidden rounded-lg bg-white shadow">
-          {/* Header */}
-          <Section className="bg-black px-6 py-4">
-            <Text className="text-lg font-semibold text-white">
-              New Website Enquiry - {data.service}
-            </Text>
-          </Section>
-
-          {/* Content */}
-          <Body className="px-6 py-6 text-sm leading-relaxed">
-            <Text className="mb-4">Hello Estratico Team,</Text>
-
-            <Text className="mb-6">
-              You have received a new enquiry through the website contact form.
-            </Text>
-
-            {/* Details */}
-            <Section className="space-y-2">
-              <Text>
-                <span className="font-semibold text-gray-600">Name:</span>{" "}
-                {data.name}
-              </Text>
-              <Text>
-                <span className="font-semibold text-gray-600">Email:</span>{" "}
-                {data.email}
-              </Text>
-              {data.company && (
-                <Text>
-                  <span className="font-semibold text-gray-600">Company:</span>{" "}
-                  {data.company}
-                </Text>
-              )}
-              {data.service && (
-                <Text>
-                  <span className="font-semibold text-gray-600">
-                    Service Interested In:
-                  </span>{" "}
-                  {data.service}
-                </Text>
-              )}
-              {data.budget && (
-                <Text>
-                  <span className="font-semibold text-gray-600">
-                    Budget Range:
-                  </span>{" "}
-                  {data.budget}
-                </Text>
-              )}
+    <Html>
+      <Head />
+      <Preview>{previewText}</Preview>
+      <Tailwind>
+        <Body className="bg-gray-50 my-auto mx-auto font-sans px-2">
+          <Container className="border border-solid border-[#eaeaea] rounded my-10 mx-auto p-5 max-w-116.25 bg-white shadow-sm">
+            {/* Header / Brand */}
+            <Section className="mt-8 text-center">
+              <Heading className="text-black text-[24px] font-bold p-0 my-7.5 mx-0 uppercase tracking-tighter">
+                ESTRATICO
+              </Heading>
             </Section>
 
-            {/* Message */}
-            <div className="mt-6 rounded-md border-l-4 border-black bg-gray-50 p-4 whitespace-pre-line">
-              {data.message}
-            </div>
-          </Body>
+            <Heading className="text-black text-[18px] font-semibold p-0 mb-4 mx-0">
+              Project Consultation Request
+            </Heading>
 
-          {/* Footer */}
-          <Text className="bg-gray-50 px-6 py-4 text-center text-xs text-gray-500">
-            This email was generated automatically from your website contact
-            form.
-          </Text>
-        </Section>
-      </Container>
-    </Tailwind>
+            <Text className="text-gray-600 text-[14px] leading-6">
+              A new high-intent inquiry has been submitted. Here are the project
+              specifics:
+            </Text>
+
+            {/* Section 1: Lead Identity */}
+            <Section className="bg-gray-50 rounded-lg p-4 mb-4 border border-solid border-gray-100">
+              <Text className="text-[12px] font-bold uppercase text-gray-400 mb-2 tracking-widest">
+                Client Profile
+              </Text>
+              <Row>
+                <Column>
+                  <Text className="m-0 text-[14px]">
+                    <span className="font-semibold">Name:</span> {data.name}
+                  </Text>
+                  <Text className="m-0 text-[14px]">
+                    <span className="font-semibold">Email:</span> {data.email}
+                  </Text>
+                </Column>
+              </Row>
+              <Row className="mt-2">
+                <Column>
+                  <Text className="m-0 text-[14px]">
+                    <span className="font-semibold">Company:</span>{" "}
+                    {data.company || "N/A"}
+                  </Text>
+                  <Text className="m-0 text-[14px]">
+                    <span className="font-semibold">Role:</span>{" "}
+                    {data.jobTitle || "Not Specified"}
+                  </Text>
+                </Column>
+              </Row>
+            </Section>
+
+            {/* Section 2: Project Parameters */}
+            <Section className="mb-6">
+              <Text className="text-[12px] font-bold uppercase text-gray-400 mb-2 tracking-widest">
+                Scope & Logistics
+              </Text>
+              <table className="w-full">
+                <tr className="border-b border-gray-100">
+                  <td className="py-2 text-[14px] text-gray-600">Service:</td>
+                  <td className="py-2 text-[14px] font-medium text-right">
+                    {data.service}
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="py-2 text-[14px] text-gray-600">
+                    Project Type:
+                  </td>
+                  <td className="py-2 text-[14px] font-medium text-right">
+                    {data.projectType}
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="py-2 text-[14px] text-gray-600">Budget:</td>
+                  <td className="py-2 text-[14px] font-medium text-right text-green-700">
+                    {data.budget}
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-100">
+                  <td className="py-2 text-[14px] text-gray-600">Timeline:</td>
+                  <td className="py-2 text-[14px] font-medium text-right">
+                    {data.timeline}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-2 text-[14px] text-gray-600">Source:</td>
+                  <td className="py-2 text-[14px] font-medium text-right italic">
+                    {data.referral || "Direct"}
+                  </td>
+                </tr>
+              </table>
+            </Section>
+
+            {/* Section 3: The Brief */}
+            <Section className="mb-6">
+              <Text className="text-[12px] font-bold uppercase text-gray-400 mb-2 tracking-widest">
+                Project Description
+              </Text>
+              <Text className="text-[14px] leading-6 bg-gray-50 p-4 rounded border-l-4 border-solid border-black italic">
+                "{data.message}"
+              </Text>
+            </Section>
+
+            <Hr className="border border-solid border-[#eaeaea] my-6.5 mx-0 w-full" />
+
+            {/* CTA / Footer */}
+            <Section className="text-center">
+              <Text className="text-[#666666] text-[12px] leading-6">
+                Estratico Internal Notification System <br />
+                Gweru, Midlands, Zimbabwe
+              </Text>
+            </Section>
+          </Container>
+        </Body>
+      </Tailwind>
+    </Html>
   );
 }
+
+interface DiscoveryConfirmationEmailProps {
+  link: string;
+  time: string;
+}
+
+export const DiscoveryConfirmationEmail = ({
+  data,
+}: {
+  data: DiscoveryConfirmationEmailProps;
+}) => {
+  const formattedDate = new Date(data.time).toLocaleString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZoneName: "short",
+  });
+
+  return (
+    <Html>
+      <Head />
+      <Preview>Your Estratico Discovery Call is Confirmed</Preview>
+      <Tailwind>
+        <Body className="bg-white font-sans">
+          <Container className="mx-auto py-10 px-5 max-w-145">
+            <Heading className="text-black text-2xl font-bold text-center uppercase tracking-tighter my-8">
+              Estratico
+            </Heading>
+
+            <Section className="bg-gray-50 rounded-xl p-8 border border-solid border-gray-100">
+              <Heading className="text-xl font-semibold mb-4">
+                Meeting Confirmed
+              </Heading>
+              <Text className="text-gray-600 text-base leading-relaxed">
+                Hello, we've successfully scheduled your technical discovery
+                call. Our team is looking forward to discussing your project
+                requirements and exploring how we can build something great
+                together.
+              </Text>
+
+              <Section className="my-6">
+                <Text className="text-xs uppercase font-bold text-gray-400 tracking-widest mb-1">
+                  When
+                </Text>
+                <Text className="text-gray-900 font-medium m-0">
+                  {formattedDate}
+                </Text>
+              </Section>
+
+              <Section className="my-6">
+                <Text className="text-xs uppercase font-bold text-gray-400 tracking-widest mb-1">
+                  Where
+                </Text>
+                <Text className="text-gray-900 font-medium m-0">
+                  Jitsi Meet
+                </Text>
+              </Section>
+
+              <Button
+                className="bg-black rounded text-white text-[14px] font-semibold no-underline text-center px-6 py-3 mt-4"
+                href={data.link}
+              >
+                Join On Jitsi Meet
+              </Button>
+            </Section>
+
+            <Text className="text-gray-400 text-xs text-center mt-8">
+              If you need to reschedule, please reply to this email at least 2
+              hours before the session.
+              <br />© {new Date().getFullYear()} Estratico Technologies. Gweru,
+              Zimbabwe.
+            </Text>
+          </Container>
+        </Body>
+      </Tailwind>
+    </Html>
+  );
+};
 
 export function NewsletterEmailTemplate({
   data,
