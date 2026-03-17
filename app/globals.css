@@ -1,7 +1,10 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
 @import 'tw-animate-css';
 
-@plugin '@tailwindcss/typography';
+@source "../components/**/*.{ts,tsx}"; 
+@source "./app/**/*.{ts,tsx}";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -149,5 +152,11 @@
 @layer base {
   .prose {
     @apply block;
+  }
+}
+@layer utilities {
+  /* This manually attaches the typography plugin's styles to your class */
+  .prose-content {
+    @apply prose dark:prose-invert max-w-none hover:prose-a:text-orange-500;
   }
 }

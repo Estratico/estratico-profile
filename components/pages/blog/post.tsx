@@ -41,19 +41,8 @@ export function Post({post }:{post:IBlogPost}) {
       </div>
 
       <div className="mx-auto max-w-2xl">
-        <div className="prose dark:prose-invert hover:prose-a:text-orange-500">
-          {/* <MarkdownPreviewer content={post.content} /> */}
-          <RichText
-            components={{
-              img: (props) => <BodyImage {...props} />,
-              pre: ({ code, language }) => (
-                <CodeBlock theme="github-dark-default" snippets={[{ code, language }]} />
-              ),
-              li: (props) => <li {...props} className="[&>p]:my-0" />,
-            }}
-          >
-            {post.content}
-          </RichText>
+        <div className="prose-content">
+           <MarkdownPreviewer content={post.content} /> 
         </div>
       </div>
     </article>

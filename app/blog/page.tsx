@@ -11,6 +11,9 @@ import { siteConfig } from '@/config/site'
 
 type Props = {}
 
+export const dynamic = "force-static"
+export const revalidate = 30
+
 export const metadata: Metadata = {
   title: "Blog & Insights",
   description: `Stay ahead with the latest trends, deep dives, and expert insights from ${siteConfig.name}. Explore articles on fintech, healthcare, e-commerce, and the future of digital transformation.`,

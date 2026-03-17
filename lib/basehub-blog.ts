@@ -13,9 +13,7 @@ const blogPostQuery = {
       _title: true,
       description: true,
       content: {
-        json: {
-          content: true,
-        },
+        markdown:true
       },
       author: true,
       status: true,
@@ -36,7 +34,9 @@ const blogPostQuery = {
  */
 export async function getAllBlogPosts(): Promise<IBlogPost[]> {
   try {
-    const data = await basehub().query(blogPostQuery);
+    const data = await basehub({next:{
+      revalidate:3600
+    }}).query(blogPostQuery);
 
     // Transform BaseHub response to IBlogPost structure
     if (!data.posts.items || !Array.isArray(data.posts.items)) {
@@ -49,7 +49,7 @@ export async function getAllBlogPosts(): Promise<IBlogPost[]> {
         slug: post._slug || "",
         title: post._title || "",
         description: post.description || "",
-        content: post.content.json.content || "",
+        content: post.content.markdown || "",
         author: post.author || "",
         status: post.status || "draft",
         coverImage: post.coverImage.url || "",

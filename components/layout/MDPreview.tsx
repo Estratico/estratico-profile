@@ -1,4 +1,5 @@
 "use client"
+
 import React, { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -21,8 +22,18 @@ interface CodeProps {
   children?: React.ReactNode;
 }
 
+// --- Styles ---
+const styles = {
+  h1: { fontSize: "2rem", fontWeight: "bold", marginTop: "1.5rem", marginBottom: "1rem" },
+  h2: { fontSize: "1.5rem", fontWeight: "600", marginTop: "1.25rem", marginBottom: "0.75rem" },
+  link: { color: "#3b82f6", textDecoration: "none" },
+  paragraph: { fontSize: "1.1rem", lineHeight: "1.6", marginBottom: "1.5rem", color: "inherit" },
+  inlineCode: { backgroundColor: "rgba(110, 118, 129, 0.2)", borderRadius: "4px", padding: "0.2rem 0.4rem" },
+  mermaidWrapper: { display: "flex", justifyContent: "center", margin: "1rem 0" },
+  container: { maxWidth: "100%", lineHeight: "1.5" }
+};
+
 // --- Mermaid Component ---
-// This handles the specialized rendering for diagrams
 const Mermaid = ({ chart }: { chart: string }) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -31,18 +42,14 @@ const Mermaid = ({ chart }: { chart: string }) => {
       startOnLoad: false,
       theme: "dark",
       flowchart: { useMaxWidth: false },
-      sequence: { useMaxWidth: false },
-      gantt: { useMaxWidth: false },
     });
     if (ref.current) {
-      mermaid.run({
-        nodes: [ref.current],
-      });
+      mermaid.run({ nodes: [ref.current] });
     }
   }, [chart]);
 
   return (
-    <div className="flex justify-center my-4">
+    <div style={styles.mermaidWrapper}>
       <div ref={ref} className="mermaid">
         {chart}
       </div>
@@ -52,36 +59,14 @@ const Mermaid = ({ chart }: { chart: string }) => {
 
 // --- Custom Components for ReactMarkdown ---
 const components: any = {
-  // Custom Heading with auto-generated IDs for linking
-  h1: ({ children, ...props }: any) => (
-    <h1 className="text-3xl font-bold mt-6 mb-4" {...props}>
-      {children}
-    </h1>
-  ),
-  h2: ({ children, ...props }: any) => (
-    <h2 className="text-2xl font-semibold mt-5 mb-3" {...props}>
-      {children}
-    </h2>
-  ),
-
-  // Custom Link
+  h1: ({ node, ...props }: any) => <h1 style={styles.h1} {...props} />,
+  h2: ({ node, ...props }: any) => <h2 style={styles.h2} {...props} />,
   a: ({ href, children }: any) => (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-blue-500 hover:underline"
-    >
+    <a href={href} target="_blank" rel="noopener noreferrer" style={styles.link}>
       {children}
     </a>
   ),
-  p: ({ children }: any) => (
-    <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-      {children}
-    </p>
-  ),
-
-  // Code Block Logic
+  p: ({ children }: any) => <p style={styles.paragraph}>{children}</p>,
   code({ inline, className, children, ...props }: CodeProps) {
     const match = /language-(\w+)/.exec(className || "");
     const codeString = String(children).replace(/\n$/, "");
@@ -100,7 +85,7 @@ const components: any = {
         {codeString}
       </SyntaxHighlighter>
     ) : (
-      <code className="bg-gray-200 dark:bg-gray-800 rounded px-1" {...props}>
+      <code style={styles.inlineCode} {...props}>
         {children}
       </code>
     );
@@ -110,15 +95,14 @@ const components: any = {
 export default function MarkdownPreviewer({ content }: MarkdownProps) {
   const [isClient, setIsClient] = useState(false);
 
-  // Ensure Mermaid only tries to render on the client
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  if (!isClient) return <div className="animate-pulse">Loading...</div>;
+  if (!isClient) return <div style={{ opacity: 0.5 }}>Loading...</div>;
 
   return (
-    <article className="prose prose-slate max-w-none dark:prose-invert">
+    <article style={styles.container}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[
