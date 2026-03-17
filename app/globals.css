@@ -145,3 +145,9 @@
     transform: translateX(100%);
   }
 }
+
+@layer base {
+  .prose {
+    @apply block;
+  }
+}
