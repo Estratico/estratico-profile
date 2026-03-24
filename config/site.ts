@@ -12,7 +12,7 @@ export const siteConfig = {
   contact: {
     email: "hello@estratico.org.zw",
     phone: "+263 78 305 2192",
-    address: "1 LongRoad, New Christmas Gift, Gweru, Zimbabwe",
+    address: "4360 Mkoba 10 Gweru, Zimbabwe",
   },
   keywords: [
     "technology company",
